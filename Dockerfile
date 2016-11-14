@@ -17,12 +17,27 @@ RUN set -x \
   && mkdir -p /opt/atlassian/crowd \
   && mkdir -p /var/opt/atlassian/application-data/crowd
 
+ADD https://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-$VERSION.tar.gz /tmp
+
+RUN set -x \
+  && tar xvfz /tmp/atlassian-crowd-$VERSION.tar.gz --strip-components=1 -C /opt/atlassian/crowd \
+  && rm /tmp/atlassian-crowd-$VERSION.tar.gz
+
+RUN set -x \
+  && sed --in-place 's/#crowd.home=\/var\/crowd-home/crowd.home=\/var\/opt\/atlassian\/application-data\/crowd/' /opt/atlassian/crowd/crowd-webapp/WEB-INF/classes/crowd-init.properties
+
+RUN set -x \
+  && touch -d "@0" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml" \
+  && touch -d "@0" "/opt/atlassian/crowd/apache-tomcat/bin/setenv.sh"
+
 ADD files/entrypoint /usr/local/bin/entrypoint
 
 RUN set -x \
   && chown -R daemon:daemon /usr/local/bin/entrypoint \
   && chown -R daemon:daemon /opt/atlassian/crowd \
   && chown -R daemon:daemon /var/opt/atlassian/application-data/crowd
+
+EXPOSE 8095
 
 USER daemon
 

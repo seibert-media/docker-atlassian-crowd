@@ -7,7 +7,8 @@ FROM anapsix/alpine-java:8_server-jre
 
 MAINTAINER //SEIBERT/MEDIA GmbH <docker@seibert-media.net>
 
-ENV VERSION 0.0.0
+ARG VERSION
+
 ENV CROWD_INST /opt/atlassian/crowd
 ENV CROWD_HOME /var/opt/atlassian/application-data/crowd
 

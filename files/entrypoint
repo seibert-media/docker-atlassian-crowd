@@ -1,29 +1,33 @@
 #!/bin/bash
 
-if [ "$(stat -c "%Y" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml")" -eq "0" ]; then
+if [ "$(stat -c "%Y" "$CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties")" -eq "0" ]; then
+  sed --in-place "s~#crowd.home=\/var\/crowd-home/crowd.home=~crowd.home=$CROWD_HOME~" $CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties
+fi
+
+if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/conf/server.xml")" -eq "0" ]; then
   if [ -n "${TOMCAT_PROXY_NAME}" ]; then
-    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "proxyName" --value "${TOMCAT_PROXY_NAME}" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml"
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "proxyName" --value "${TOMCAT_PROXY_NAME}" "${CROWD_INST}/apache-tomcat/conf/server.xml"
   fi
   if [ -n "${TOMCAT_PROXY_PORT}" ]; then
-    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "proxyPort" --value "${TOMCAT_PROXY_PORT}" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml"
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "proxyPort" --value "${TOMCAT_PROXY_PORT}" "${CROWD_INST}/apache-tomcat/conf/server.xml"
   fi
   if [ -n "${TOMCAT_PROXY_SCHEME}" ]; then
-    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "scheme" --value "${TOMCAT_PROXY_SCHEME}" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml"
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "scheme" --value "${TOMCAT_PROXY_SCHEME}" "${CROWD_INST}/apache-tomcat/conf/server.xml"
   fi
   if [ -n "${TOMCAT_PROXY_SECURE}" ]; then
-    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "secure" --value "${TOMCAT_PROXY_SECURE}" "/opt/atlassian/crowd/apache-tomcat/conf/server.xml"
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="8095"]' --type "attr" --name "secure" --value "${TOMCAT_PROXY_SECURE}" "${CROWD_INST}/apache-tomcat/conf/server.xml"
   fi
 fi
 
-if [ "$(stat -c "%Y" "/opt/atlassian/crowd/apache-tomcat/bin/setenv.sh")" -eq "0" ]; then
+if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/bin/setenv.sh")" -eq "0" ]; then
   if [ -n "${JVM_MEMORY_MIN}" ]; then
-    sed --in-place "s/-Xms[0-9]\{3\}m/-Xms${JVM_MEMORY_MIN}/" /opt/atlassian/crowd/apache-tomcat/bin/setenv.sh
+    sed --in-place "s/-Xms[0-9]\{3\}m/-Xms${JVM_MEMORY_MIN}/" ${CROWD_INST}/apache-tomcat/bin/setenv.sh
   fi
   if [ -n "${JVM_MEMORY_MAX}" ]; then
-    sed --in-place "s/-Xmx[0-9]\{3\}m/-Xmx${JVM_MEMORY_MAX}/" /opt/atlassian/crowd/apache-tomcat/bin/setenv.sh
+    sed --in-place "s/-Xmx[0-9]\{3\}m/-Xmx${JVM_MEMORY_MAX}/" ${CROWD_INST}/apache-tomcat/bin/setenv.sh
   fi
 fi
 
-nohup /opt/atlassian/crowd/start_crowd.sh >/dev/null 2>&1 &
+nohup ${CROWD_INST}/start_crowd.sh >/dev/null 2>&1 &
 
 /bin/bash

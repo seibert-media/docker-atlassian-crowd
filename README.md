@@ -19,6 +19,13 @@ This is a Docker-Image for Atlassian Crowd based on [Alpine Linux](http://alpine
 ## Ports
 * 8095
 
+## Build conatiner
+Specify the application version in the build command:
+
+```bash
+docker build --build-arg VERSION=x.x.x .                                                        
+```
+
 ## Getting started
 
 Run Crowd standalone and navigate to `http://[dockerhost]:8095` to finish configuration:
@@ -33,7 +40,7 @@ Run Crowd standalone with customised jvm settings and navigate to `http://[docke
 docker run -tid -p 8095:8095 -e JVM_MEMORY_MIN=2g -e JVM_MEMORY_MAX=4g seibertmedia/atlassian-crowd:latest
 ```
 
-Specify persistent volume for Crowd data directory and redirect application logs to stdout:
+Specify persistent volume for Crowd data directory:
 
 ```bash
 docker run -tid -p 8095:8095 -v crowd_data:/var/opt/atlassian/application-data/crowd seibertmedia/atlassian-crowd:latest

@@ -42,4 +42,6 @@ EXPOSE 8095
 
 USER daemon
 
+VOLUME $CROWD_HOME
+
 ENTRYPOINT  ["/usr/local/bin/entrypoint"]

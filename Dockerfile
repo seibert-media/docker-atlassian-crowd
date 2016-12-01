@@ -32,10 +32,6 @@ RUN set -x \
   && touch -d "@0" "$CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties"
 
 ADD files/entrypoint /usr/local/bin/entrypoint
-ADD files/_.codeyard.com.crt /tmp/_codeyard.com.crt
-
-RUN set -x \
-  && /opt/jdk/bin/keytool -import -trustcacerts -noprompt -keystore /opt/jdk/jre/lib/security/cacerts -storepass changeit -alias CODEYARD -file /tmp/_codeyard.com.crt
 
 RUN set -x \
   && chown -R daemon:daemon /usr/local/bin/entrypoint \
@@ -45,5 +41,7 @@ RUN set -x \
 EXPOSE 8095
 
 USER daemon
+
+VOLUME $CROWD_HOME
 
 ENTRYPOINT  ["/usr/local/bin/entrypoint"]

@@ -28,6 +28,4 @@ if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/bin/setenv.sh")" -eq "0" ]; th
   fi
 fi
 
-nohup ${CROWD_INST}/start_crowd.sh >/dev/null 2>&1 &
-
-/bin/bash
+exec "$@"

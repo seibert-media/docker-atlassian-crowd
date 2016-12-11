@@ -1,0 +1,3 @@
+#!/bin/bash
+
+${CROWD_INST}/apache-tomcat/bin/catalina.sh run

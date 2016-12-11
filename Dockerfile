@@ -31,9 +31,11 @@ RUN set -x \
   && touch -d "@0" "$CROWD_INST/apache-tomcat/bin/setenv.sh" \
   && touch -d "@0" "$CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties"
 
+ADD files/service /usr/local/bin/service
 ADD files/entrypoint /usr/local/bin/entrypoint
 
 RUN set -x \
+  && chown -R daemon:daemon /usr/local/bin/service \
   && chown -R daemon:daemon /usr/local/bin/entrypoint \
   && chown -R daemon:daemon $CROWD_INST \
   && chown -R daemon:daemon $CROWD_HOME
@@ -44,4 +46,6 @@ USER daemon
 
 VOLUME $CROWD_HOME
 
-ENTRYPOINT  ["/usr/local/bin/entrypoint"]
+ENTRYPOINT ["/usr/local/bin/entrypoint"]
+
+CMD ["/usr/local/bin/service"]

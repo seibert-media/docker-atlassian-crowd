@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ "$(stat -c "%Y" "$CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties")" -eq "0" ]; then
-  sed --in-place "s~#crowd.home=\/var\/crowd-home/crowd.home=~crowd.home=$CROWD_HOME~" $CROWD_INST/crowd-webapp/WEB-INF/classes/crowd-init.properties
+if [ "$(stat -c "%Y" "${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties")" -eq "0" ]; then
+  sed --in-place "s~#crowd.home=\/var\/crowd-home/crowd.home=~crowd.home=${CROWD_HOME}~" ${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties
 fi
 
 if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/conf/server.xml")" -eq "0" ]; then

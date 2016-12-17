@@ -11,7 +11,7 @@ describe docker_image 'atlassian-crowd:build' do
   its(['Config.Cmd']) { should include '/usr/local/bin/service' }
   its(['Config.Entrypoint']) { should include '/usr/local/bin/entrypoint' }
 
-  its(['Config.User']) { should match 'daemon' }
+  its(['Config.User']) { should match 'crowd' }
 
   its(['Config.Env']) { should include 'JAVA_VERSION_MAJOR=8' }
   its(['Config.Env']) { should include 'CROWD_INST=/opt/atlassian/crowd' }

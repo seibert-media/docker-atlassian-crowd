@@ -11,6 +11,9 @@ ARG VERSION
 
 ENV CROWD_INST /opt/atlassian/crowd
 ENV CROWD_HOME /var/opt/atlassian/application-data/crowd
+ENV SYSTEM_USER crowd
+ENV SYSTEM_GROUP crowd
+ENV SYSTEM_HOME /home/crowd
 
 RUN set -x \
   && apk add git tar xmlstarlet --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
@@ -19,6 +22,12 @@ RUN set -x \
 RUN set -x \
   && mkdir -p $CROWD_INST \
   && mkdir -p $CROWD_HOME
+
+RUN set -x \
+  && mkdir -p /home/$SYSTEM_USER \
+  && addgroup -S $SYSTEM_GROUP \
+  && adduser -S -D -G $SYSTEM_GROUP -h $SYSTEM_GROUP -s /bin/sh $SYSTEM_USER \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP /home/$SYSTEM_USER
 
 ADD https://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-$VERSION.tar.gz /tmp
 
@@ -35,14 +44,14 @@ ADD files/service /usr/local/bin/service
 ADD files/entrypoint /usr/local/bin/entrypoint
 
 RUN set -x \
-  && chown -R daemon:daemon /usr/local/bin/service \
-  && chown -R daemon:daemon /usr/local/bin/entrypoint \
-  && chown -R daemon:daemon $CROWD_INST \
-  && chown -R daemon:daemon $CROWD_HOME
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP /usr/local/bin/service \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP /usr/local/bin/entrypoint \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP $CROWD_INST \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP $CROWD_HOME
 
 EXPOSE 8095
 
-USER daemon
+USER $SYSTEM_USER
 
 VOLUME $CROWD_HOME
 

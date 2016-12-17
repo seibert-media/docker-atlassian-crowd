@@ -38,7 +38,7 @@ RUN set -x \
   && rm /tmp/atlassian-crowd-$VERSION.tar.gz
 
 RUN set -x \
-  && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C  $CROWD_INST/apache-tomcat/lib/ \
+  && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $CROWD_INST/apache-tomcat/lib/ \
   && rm /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz
 
 RUN set -x \

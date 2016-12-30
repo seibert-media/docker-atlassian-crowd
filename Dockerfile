@@ -34,11 +34,11 @@ ADD https://www.atlassian.com/software/crowd/downloads/binary/atlassian-crowd-$V
 ADD https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz /tmp
 
 RUN set -x \
-  && tar xvfz /tmp/atlassian-crowd-$VERSION.tar.gz --strip-components=1 -C $CROWD_INST \
+  && tar xfz /tmp/atlassian-crowd-$VERSION.tar.gz --strip-components=1 -C $CROWD_INST \
   && rm /tmp/atlassian-crowd-$VERSION.tar.gz
 
 RUN set -x \
-  && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $CROWD_INST/apache-tomcat/lib/ \
+  && tar xfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $CROWD_INST/apache-tomcat/lib/ \
   && rm /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz
 
 RUN set -x \

@@ -38,8 +38,13 @@ RUN set -x \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${CROWD_HOME}
 
 RUN set -x \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/demo.xml \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/openidserver.xml \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/openidclient.xml
+
+RUN set -x \
   && wget -nv -O /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz \
-  && tar xfz /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz /tmp \
+  && tar xfz /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz -C /tmp \
   && cp /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}/mysql-connector-java-${MYSQL_JDBC_VERSION}-bin.jar ${CROWD_INST}/apache-tomcat/lib/ \
   && rm /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz
 

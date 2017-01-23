@@ -19,6 +19,7 @@ This is a Docker-Image for Atlassian Crowd based on [Alpine Linux](http://alpine
 
 ## Ports
 * 8095
+* 8009 (Crowd AJP)
 
 ## Build container
 Specify the application version in the build command:

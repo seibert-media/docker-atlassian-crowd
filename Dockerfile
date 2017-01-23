@@ -61,6 +61,7 @@ RUN set -x \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} /usr/local/bin/entrypoint
 
 EXPOSE 8095
+EXPOSE 8009
 
 USER ${SYSTEM_USER}
 

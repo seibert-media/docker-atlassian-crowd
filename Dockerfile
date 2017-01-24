@@ -36,6 +36,11 @@ RUN set -x \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${CROWD_INST}
 
 RUN set -x \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/demo.xml \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/openidserver.xml \
+  && rm ${CROWD_INST}/apache-tomcat/conf/Catalina/localhost/openidclient.xml
+
+RUN set -x \
   && touch -d "@0" "${CROWD_INST}/apache-tomcat/conf/server.xml" \
   && touch -d "@0" "${CROWD_INST}/apache-tomcat/bin/setenv.sh" \
   && touch -d "@0" "${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties"

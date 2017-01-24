@@ -10,8 +10,8 @@ MAINTAINER //SEIBERT/MEDIA GmbH <docker@seibert-media.net>
 ARG VERSION
 ARG MYSQL_JDBC_VERSION
 
-ENV CROWD_INST /opt/atlassian/crowd
-ENV CROWD_HOME /var/opt/atlassian/application-data/crowd
+ENV CROWD_INST /opt/crowd
+ENV CROWD_HOME /var/opt/crowd
 ENV SYSTEM_USER crowd
 ENV SYSTEM_GROUP crowd
 ENV SYSTEM_HOME /home/crowd

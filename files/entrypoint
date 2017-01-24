@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$(stat -c "%U" ${CROWD_HOME})" != "${SYSTEM_USER}" ]; then
+  chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${CROWD_HOME}
+fi
+
 if [ "$(stat -c "%Y" "${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties")" -eq "0" ]; then
   sed --in-place "s~#crowd.home=\/var\/crowd-home~crowd.home=${CROWD_HOME}~" ${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties
 fi

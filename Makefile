@@ -1,11 +1,15 @@
-VERSION ?= 2.11.0
-MYSQL_JDBC_VERSION ?= 5.1.40
+ATLASSIAN_VERSION ?= $(VERSION)
 REGISTRY ?= docker.seibert-media.net
 
-all: build upload clean
-clean:
+build: checkvars
+	docker build --no-cache --rm=true --build-arg VERSION=$(ATLASSIAN_VERSION) -t $(REGISTRY)/seibertmedia/atlassian-crowd:$(VERSION) .
+clean: checkvars
 	docker rmi $(REGISTRY)/seibertmedia/atlassian-crowd:$(VERSION)
-build:
-	docker build --no-cache --rm=true --build-arg VERSION=$(VERSION) --build-arg MYSQL_JDBC_VERSION=$(MYSQL_JDBC_VERSION) -t $(REGISTRY)/seibertmedia/atlassian-crowd:$(VERSION) .
-upload:
+upload: checkvars
 	docker push $(REGISTRY)/seibertmedia/atlassian-crowd:$(VERSION)
+all: checkvars build upload clean
+
+checkvars:
+ifndef VERSION
+	$(error env variable VERSION has to be set)
+endif

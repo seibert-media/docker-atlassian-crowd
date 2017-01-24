@@ -43,13 +43,7 @@ RUN set -x \
 ADD files/service /usr/local/bin/service
 ADD files/entrypoint /usr/local/bin/entrypoint
 
-RUN set -x \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} /usr/local/bin/service \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} /usr/local/bin/entrypoint
-
-EXPOSE 8095
-
-USER ${SYSTEM_USER}
+EXPOSE 8009 8095 
 
 VOLUME ${CROWD_HOME}
 

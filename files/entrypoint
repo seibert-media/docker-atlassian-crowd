@@ -32,4 +32,4 @@ if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/bin/setenv.sh")" -eq "0" ]; th
   fi
 fi
 
-exec "$@"
+exec su-exec ${SYSTEM_USER} "$@"

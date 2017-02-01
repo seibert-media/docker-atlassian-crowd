@@ -1,10 +1,15 @@
 #!/bin/bash
 
+if [ "$(stat -c "%U" ${CROWD_HOME})" != "${SYSTEM_USER}" ]; then
+  chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${CROWD_HOME}
+fi
+
 if [ "$(stat -c "%Y" "${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties")" -eq "0" ]; then
   sed --in-place "s~#crowd.home=\/var\/crowd-home~crowd.home=${CROWD_HOME}~" ${CROWD_INST}/crowd-webapp/WEB-INF/classes/crowd-init.properties
 fi
 
 if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/conf/server.xml")" -eq "0" ]; then
+
   xmlstarlet ed --inplace -s '//Service[@name="Catalina"]' -t "elem" -n 'Connector port="8009" URIEncoding="UTF-8" enableLookups="false" protocol="AJP/1.3"' "${CROWD_INST}/apache-tomcat/conf/server.xml"
 
   if [ -n "${TOMCAT_PROXY_NAME}" ]; then
@@ -30,4 +35,4 @@ if [ "$(stat -c "%Y" "${CROWD_INST}/apache-tomcat/bin/setenv.sh")" -eq "0" ]; th
   fi
 fi
 
-exec "$@"
+exec su-exec ${SYSTEM_USER} "$@"
